@@ -3,10 +3,16 @@ import feedparser
 
 URL = 'https://www.wired.com/feed/rss'
 
+def get_request():
+    
+    # GET request, parse, and store the XML in a var
+    feed_parse = feedparser.parse(URL)
+    return feed_parse
+    
 def get_feed():
     
     # GET request, parse, and store the XML in a var
-    data = feedparser.parse(URL)
+    data = get_request()
     feed = []
     
     # list for storing titles
@@ -16,9 +22,10 @@ def get_feed():
 
 def get_hash():
     
-    # GET request, parse, and store the XML in a var
-    feed_parse = feedparser.parse(URL)
+    data = get_request()
     
-    # Create initial hash of the timestamp
-    hashVal = hashlib.sha224((str(feed_parse.feed.updated).encode('utf-8'))).hexdigest()
+    # create initial hash of the timestamp
+    
+    entry = str(data.entries[0].title)
+    hashVal = hashlib.sha224(entry.encode('utf-8')).hexdigest()
     return hashVal
